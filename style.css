@@ -1,0 +1,22 @@
+table{
+    border: 1px solid black;
+  }
+table td
+{
+  margin:auto;
+  padding-right: 1vw;
+  
+}
+body{
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  align-content: flex-start;
+}
+#title{
+  text-align: center;
+}
+
+#add_bar{
+  margin-bottom: 1vh;
+}
