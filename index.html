@@ -9,17 +9,38 @@
 <script src="library.js" defer></script>
 <body>
 
-<div>
+<div id="header">
  <h1 id="title">Simple Library Project</h1>
  <p>This website will allow you to maintain and add to a library of books</p>
 </div>
+
+
 <div id="add_bar">
     <input id="add_bar" type="search" data-="" placeholder="Insert Book Title"></input>
-    <button>Add Book</button>
+    <button class="open-button" onclick="openForm()">Add Book</button>
 </div>
 
-<div Id="container"> 
+<div class="form-popup" id="myForm">
+    <form class="form-container">
+      <h1>Login</h1>
+  
+      <label for="title"><b>Title</b></label>
+      <input id="form_title" type="text" placeholder="Enter title" name="title" required>
+      <label for="author"><b>Author</b></label>
+      <input id="author" type="text" placeholder="Enter author" name="author" required>
+      <label for="pages"><b>Pages</b></label>
+      <input id="pages" type="number" placeholder="# of pages in Book" name="title" required>
+      <label for="read"><b>Read</b></label>
+      <input id="read" type="checkbox" name="psw">
+      <button type="submit" class="btn" onclick="truecloseForm()">Login</button>
+      <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+  </div>
+
+
+<div Id="table"> 
 </div>
+
 
 </body>
 </html>
