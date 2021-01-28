@@ -16,14 +16,12 @@
 
 
 <div id="add_bar">
-    <input id="add_bar" type="search" data-="" placeholder="Insert Book Title"></input>
-    <button class="open-button" onclick="openForm()">Add Book</button>
+    <input type="image" src="./resources/plus.png" name="saveForm" class="btTxt submit" onclick="openForm()" id="popButton" />
 </div>
 
 <div class="form-popup" id="myForm">
-    <form class="form-container">
+    <form id="form_clean" class="form-container">
       <h1>Login</h1>
-  
       <label for="title"><b>Title</b></label>
       <input id="form_title" type="text" placeholder="Enter title" name="title" required>
       <label for="author"><b>Author</b></label>
@@ -33,7 +31,7 @@
       <label for="read"><b>Read</b></label>
       <input id="read" type="checkbox" name="psw">
       <button type="submit" class="btn" onclick="truecloseForm()">Login</button>
-      <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+      <button class="btn cancel" onclick="closeForm()">Close</button>
     </form>
   </div>
 

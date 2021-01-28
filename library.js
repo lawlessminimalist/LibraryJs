@@ -36,10 +36,32 @@ function book(title,author,pages,read) {
     document.getElementById("add_bar").style.opacity = "1";
     document.getElementById("header").style.opacity = "1";
     document.getElementById("table").style.opacity = "1";
-    document.getElementById("myForm").reset();
-    $(':input:not(:button)', div).val([]);
+        
+    
+      title = document.getElementById("form_title").value
+      author =  document.getElementById("author").value;
+      pages =  document.getElementById("pages").value;
+      if(document.getElementById("read").checked){
+        read = "Read";
+      }
+      else{
+        read="Not Read";
+      }
+  
+      newBook = new book(title, author, pages, read)
+      addBookToLibrary(newBook);
+      make_table();
+      document.getElementById("form_clean").reset();
+    
+    
 
 
+  }
+
+  function removeBook(bookToRemove)
+  {
+    myLibrary.splice(bookToRemove,1)
+    make_table();
   }
 
 
@@ -62,26 +84,17 @@ function book(title,author,pages,read) {
 
   }
 
-  var form = document.querySelector("form");
-  form.onsubmit = function(){
-    title = document.getElementById("form_title").value
-    author =  document.getElementById("author").value;
-    pages =  document.getElementById("pages").value;
-    if(document.getElementById("read").checked){
-      read = "Read";
-    }
-    else{
-      read="Not Read";
-    }
 
-    newBook = new book(title, author, pages, read)
-    addBookToLibrary(newBook);
-    make_table();
-  }
+
+  
+  //prevent submit from refreshing page
+  var form = document.querySelector("form");
   function handleForm(event) { event.preventDefault(); } 
   form.addEventListener('submit', handleForm);
 
 
+
+//write data into table format
 function make_table()
 {
   var perrow = 5,
@@ -106,9 +119,8 @@ html+= `<tr>`
     html += `<td>${cell}</td>`
     //add button to delete the row from the libray//
     html += `<td><button onClick="change_status(${i})">&#9998</button></td>`
-    console.log(html);
+    html += `<td><button onClick="removeBook(${i})">&#128465</button></td>`
 html+= `</tr>`
-console.log(html);
 }
 
 document.getElementById("table").innerHTML = html;
