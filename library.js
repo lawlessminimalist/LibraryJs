@@ -1,5 +1,8 @@
-
+//create localstorage Variables//
+let storage = window.localStorage;
 let myLibrary = [];
+let counter = 0;
+
 
 function book(title,author,pages,read) {
     this.title = title;
@@ -12,9 +15,37 @@ function book(title,author,pages,read) {
     return(`${this.title} by ${this.author},${this.pages} pages, ${this.read}`);
   }
 
+
+function addBookfromStorage(booktoAdd){
+  let x = JSON.parse(booktoAdd);
+  console.log(x); 
+  let e = new book(x.title,x.author,x.pages,x.read);
+  myLibrary.push(e);
+}
+
   function addBookToLibrary(booktoAdd) {
     myLibrary.push(booktoAdd);
+    localStorage.setItem(JSON.stringify(counter),JSON.stringify(booktoAdd));
+    console.log(localStorage.getItem(JSON.stringify(counter)));
+    console.log(counter);
+    counter++;
   }
+
+  function reindex(){
+    let int_count = 0;
+    let temp_library=[]
+    for(let x = 0;x<localStorage.length;x++){
+      let select = localStorage.getItem(int_count);
+      if(select!=null){
+        console.log("x");
+          temp_library.push(select);
+      }
+      int_count++;
+    }
+    console.log(temp_library);
+
+  }
+localStorage.clear();
 
   function openForm() {
     document.getElementById("myForm").style.display = "flex";
@@ -58,19 +89,47 @@ function book(title,author,pages,read) {
 
   }
 
+
+  function checkLocal(){
+console.log(localStorage.getItem('0'))
+   if(myLibrary.length == 0){
+    console.log(localStorage.getItem('0'))
+    if(localStorage.getItem('0')!== null){
+      myLibrary = [];
+      console.log('1st level')
+      for(i=0;i <localStorage.length;i++){
+        console.log(localStorage)
+        addBookfromStorage(localStorage.getItem(`${i}`));
+        
+      }
+      counter = localStorage.length;
+    }
+    else{
+        //Insert Preliminary Data
+          let a = new book("The Hobbit","J.R Tolkein","300","Not Read");
+          let b = new book("12 Rules for Life","Jordan B Peterson","448","Read");
+          addBookToLibrary(a);
+          addBookToLibrary(b);
+    }
+    make_table();
+  }
+}
+
   function removeBook(bookToRemove)
   {
+
     myLibrary.splice(bookToRemove,1)
+
+    localStorage.removeItem(JSON.stringify(bookToRemove));
+    counter--;
+    checkLocal();
+
+    reindex();
     make_table();
   }
 
-
-  //Insert Preliminary Data
-  let a = new book("The Hobbit","J.R Tolkein","300","Not Read");
-  let b = new book("12 Rules for Life","Jordan B Peterson","448","Read");
-  addBookToLibrary(a);
-  addBookToLibrary(b);
-
+  checkLocal();
+  
 
   function change_status(index){
     console.log(myLibrary[index].read);
