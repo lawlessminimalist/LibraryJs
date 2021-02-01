@@ -2,8 +2,9 @@
 let storage = window.localStorage;
 let myLibrary = [];
 let counter = 0;
+let init = true;
 
-
+//book object factory 
 function book(title,author,pages,read) {
     this.title = title;
     this.author = author;
@@ -16,37 +17,42 @@ function book(title,author,pages,read) {
   }
 
 
+
+//scan in books stored in string format from the local storage
 function addBookfromStorage(booktoAdd){
   let x = JSON.parse(booktoAdd);
-  console.log(x); 
   let e = new book(x.title,x.author,x.pages,x.read);
   myLibrary.push(e);
 }
 
+//push books objects to both internal and local storage
   function addBookToLibrary(booktoAdd) {
     myLibrary.push(booktoAdd);
     localStorage.setItem(JSON.stringify(counter),JSON.stringify(booktoAdd));
-    console.log(localStorage.getItem(JSON.stringify(counter)));
-    console.log(counter);
     counter++;
   }
 
+  //sort through array and reindex all the elements when
+  //an item is spliced from the array
   function reindex(){
     let int_count = 0;
     let temp_library=[]
-    for(let x = 0;x<localStorage.length;x++){
+    for(let x = 0;x<localStorage.length+1;x++){
       let select = localStorage.getItem(int_count);
       if(select!=null){
-        console.log("x");
           temp_library.push(select);
       }
       int_count++;
     }
-    console.log(temp_library);
+    localStorage.clear()
+    for(let e = 0; e < temp_library.length;e++)
+    {
+      localStorage.setItem(JSON.stringify(e),temp_library[e]);
+    }
 
   }
-localStorage.clear();
 
+  //function to show popup
   function openForm() {
     document.getElementById("myForm").style.display = "flex";
     document.getElementById("myForm").style.width = "30vw";
@@ -54,7 +60,8 @@ localStorage.clear();
     document.getElementById("header").style.opacity = ".1";
     document.getElementById("table").style.opacity = ".1";
   }
-  
+
+  //function to close popup 
   function closeForm() {
     document.getElementById("myForm").style.display = "none";
     document.getElementById("add_bar").style.opacity = "1";
@@ -62,6 +69,7 @@ localStorage.clear();
     document.getElementById("table").style.opacity = "1";
   }
 
+  //fucntion to close and submit form details
   function truecloseForm() {
     document.getElementById("myForm").style.display = "none";
     document.getElementById("add_bar").style.opacity = "1";
@@ -89,16 +97,17 @@ localStorage.clear();
 
   }
 
-
+//initlize and check for stored data
+//if data is found then replace internal array with local data
+//if no data then initlize with sample data 
   function checkLocal(){
-console.log(localStorage.getItem('0'))
+
    if(myLibrary.length == 0){
-    console.log(localStorage.getItem('0'))
     if(localStorage.getItem('0')!== null){
       myLibrary = [];
-      console.log('1st level')
+      reindex();
+
       for(i=0;i <localStorage.length;i++){
-        console.log(localStorage)
         addBookfromStorage(localStorage.getItem(`${i}`));
         
       }
@@ -112,9 +121,11 @@ console.log(localStorage.getItem('0'))
           addBookToLibrary(b);
     }
     make_table();
+    init=false;
   }
 }
 
+  //pop book from array both locally and internally
   function removeBook(bookToRemove)
   {
 
@@ -122,17 +133,15 @@ console.log(localStorage.getItem('0'))
 
     localStorage.removeItem(JSON.stringify(bookToRemove));
     counter--;
-    checkLocal();
 
     reindex();
     make_table();
   }
 
-  checkLocal();
-  
 
+  
+//change the read attribute of a book item
   function change_status(index){
-    console.log(myLibrary[index].read);
     if(myLibrary[index].read != "Read"){
       myLibrary[index].read = "Read";
     }
@@ -159,32 +168,36 @@ function make_table()
   var perrow = 5,
   html = "<table>";
 
-console.log(myLibrary.length);
+  //for every book object create a table row
 for (var i = 0; i < myLibrary.length; i++) {
 
+  //if at the header
 if(i==0){
-    
     html+=`<tr><th>Title</th><th>Author</th><th>Pages</th><th>Read</th><th>Edit</th></tr>`
 }
-html+= `<tr>`
 
+html+= `<tr>`
     var cell = myLibrary[i].title;
-    html += `<td>${cell}</td>`
+    html += `<td style="text-wrap:normal;word-wrap:break-word">${cell}</td>`
      cell = myLibrary[i].author;
-    html += `<td>${cell}</td>`
+    html += `<td style="text-wrap:normal;word-wrap:break-word">${cell}</td>`
      cell = myLibrary[i].pages;
-    html += `<td>${cell}</td>`
+    html += `<td style="text-wrap:normal;word-wrap:break-word">${cell}</td>`
      cell = myLibrary[i].read;
-    html += `<td>${cell}</td>`
-    //add button to delete the row from the libray//
+    html += `<td style="text-wrap:normal;word-wrap:break-word">${cell}</td>`
+
+    //add button to delete the row and change read status from the libray//
     html += `<td><button onClick="change_status(${i})">&#9998</button></td>`
     html += `<td><button onClick="removeBook(${i})">&#128465</button></td>`
+    
 html+= `</tr>`
 }
 
 document.getElementById("table").innerHTML = html;
 }
 
+
+if(init)checkLocal();
 make_table();
 
  
